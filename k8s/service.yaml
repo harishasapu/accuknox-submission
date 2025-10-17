@@ -1,0 +1,16 @@
+ssProbe:
+          tcpSocket:
+            port: 4499
+          initialDelapiVersion: v1
+kind: Service
+metadata:
+  name: wisecow
+  namespace: wisecow
+spec:
+  selector:
+  ports:
+  - name: tcp
+    port: 4499
+    targetPort: 4499
+    app: wisecow
+  type: ClusterIP
