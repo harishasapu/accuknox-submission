@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/harishasapu/wisecow.git
+    repoURL: https://github.com/harishasapu/accuknox-submission.git
     targetRevision: main
     path: manifests
   destination:
