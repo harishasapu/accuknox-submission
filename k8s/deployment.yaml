@@ -2,7 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wisecow
-  namespace: wisecow
+  labels:
+    app: wisecow
 spec:
   replicas: 2
   selector:
@@ -15,16 +16,7 @@ spec:
     spec:
       containers:
       - name: wisecow
-        image: harishasapu/wisecow:latest
+        image: ghcr.io/harishasapu/wisecow:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 4499
-        readinessProbe:
-          tcpSocket:
-            port: 4499
-          initialDelaySeconds: 5
-          periodSeconds: 10
-        livenessProbe:
-          tcpSocket:
-            port: 4499
-          initialDelaySeconds: 20
-          periodSeconds: 20
