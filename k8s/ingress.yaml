@@ -2,23 +2,22 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: wisecow-ingress
-  namespace: wisecow
   annotations:
-    kubernetes.io/ingress.class: "nginx"
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-staging
 spec:
   tls:
   - hosts:
-    - wisecow.example.com
+      - wisecow.local
     secretName: wisecow-tls
   rules:
-  - host: wisecow.example.com
+  - host: wisecow.local
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: wisecow
+            name: wisecow-service
             port:
-              number: 4499
+              number: 80
