@@ -5,7 +5,7 @@ metadata:
   labels:
     app: wisecow
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: wisecow
@@ -17,6 +17,5 @@ spec:
       containers:
       - name: wisecow
         image: ghcr.io/harishasapu/wisecow:latest
-        imagePullPolicy: Always
         ports:
         - containerPort: 4499
