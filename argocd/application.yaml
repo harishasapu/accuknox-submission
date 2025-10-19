@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://github.com/harishasapu/accuknox-submission.git
     targetRevision: main
-    path: manifests
+    path: k8s/
   destination:
     server: https://kubernetes.default.svc
     namespace: wisecow
