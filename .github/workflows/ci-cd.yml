@@ -1,6 +1,0 @@
-name: CI/CD — Build, Push, Deploy (Wisecow)
-
-on:
-  push:
-    branches: [ main ]
-  
