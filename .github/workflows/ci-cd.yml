@@ -29,3 +29,8 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/wisecow:latest
           ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}
+      - name: Update image in deployment.yaml
+  run: |
+    sed -i "s|image: .*/wisecow:.*|image: ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}|" k8s/deployment.yaml
+
+
