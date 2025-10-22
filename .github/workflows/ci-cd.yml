@@ -10,7 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GH_PAT }}   # Use your Personal Access Token for push permissions
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -30,9 +33,10 @@ jobs:
           ${{ secrets.DOCKER_USERNAME }}/wisecow:latest
           ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}
 
-    - name: Update image in deployment.yaml
+    - name: Update image in wisecow-deployment.yaml
       run: |
         sed -i "s|image: .*/wisecow:.*|image: ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}|" k8s/wisecow-deployment.yaml
+
     - name: Commit and push updated deployment.yaml
       uses: stefanzweifel/git-auto-commit-action@v4
       with:
