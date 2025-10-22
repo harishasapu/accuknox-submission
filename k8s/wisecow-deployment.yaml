@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: wisecow
-        image: harishasapu/wisecow:daf640f06067f5a43ab09e6774bc32a859ab2cdd
+        image: harishasapu/wisecow:1ae6d0cffb36a1a1b57a02d47b8321090c595fc2
         imagePullPolicy: Never   # <- Add this line
         ports:
         - containerPort: 4499
