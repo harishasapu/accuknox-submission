@@ -4,17 +4,18 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'k8s/wisecow-deployment.yaml'  # ignore auto image tag updates
 
 jobs:
   build-and-deploy:
-    if: "!contains(github.event.head_commit.message, 'Update image tag in wisecow-deployment.yaml')"
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
       with:
-        token: ${{ secrets.GH_PAT }}
+        token: ${{ secrets.GH_PAT }}   # Required for committing back to repo
 
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v3
@@ -34,7 +35,7 @@ jobs:
           ${{ secrets.DOCKER_USERNAME }}/wisecow:latest
           ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}
 
-    - name: Update image in wisecow-deployment.yaml
+    - name: Update image tag in wisecow-deployment.yaml
       run: |
         sed -i "s|image: .*/wisecow:.*|image: ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}|" k8s/wisecow-deployment.yaml
 
