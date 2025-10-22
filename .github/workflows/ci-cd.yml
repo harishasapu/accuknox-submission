@@ -32,4 +32,4 @@ jobs:
 
     - name: Update image in deployment.yaml
       run: |
-        sed -i "s|image: .*/wisecow:.*|image: ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}|" k8s/deployment.yaml
+        sed -i "s|image: .*/wisecow:.*|image: ${{ secrets.DOCKER_USERNAME }}/wisecow:${{ github.sha }}|" k8s/wisecow-deployment.yaml
