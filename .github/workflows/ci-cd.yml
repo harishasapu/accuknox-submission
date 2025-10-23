@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout code
@@ -44,3 +44,4 @@ jobs:
       with:
         commit_message: "Update image tag in wisecow-deployment.yaml"
         file_pattern: k8s/wisecow-deployment.yaml
+
