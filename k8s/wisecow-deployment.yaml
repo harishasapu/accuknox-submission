@@ -1,9 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: wisecow
-  labels:
-    app: wisecow
+  name: wisecow-deployment
 spec:
   replicas: 1
   selector:
@@ -16,6 +14,6 @@ spec:
     spec:
       containers:
       - name: wisecow
-        image: ghcr.io/harishasapu/wisecow:latest
+        image: harishasapu/wisecow:latest  # <- Add this line
         ports:
         - containerPort: 4499
