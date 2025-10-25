@@ -39,7 +39,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/wisecow:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/wisecow:${{ github.sha }}
 
-      # Step 5: Update Kubernetes deployment YAML with latest image
+      # Step 5: Update Kubernetes deployment YAML with latest image Latest
       - name: Update Deployment YAML
         env:
           IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/wisecow:${{ github.sha }}
