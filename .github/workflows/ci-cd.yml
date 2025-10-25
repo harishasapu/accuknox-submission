@@ -39,7 +39,7 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/wisecow:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/wisecow:${{ github.sha }}
 
-      # Step 5: Update Kubernetes deployment YAML with latest image Latest
+      # Step 5: Update Kubernetes deployment YAML with latest image
       - name: Update Deployment YAML
         env:
           IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/wisecow:${{ github.sha }}
@@ -47,6 +47,6 @@ jobs:
           sed -i "s|image:.*|image: $IMAGE|g" manifests/wisecow-deployment.yaml
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add k8s/wisecow-deployment.yaml
+          git add manifests/wisecow-deployment.yaml
           git commit -m "Auto-update deployment image to $IMAGE [skip ci]" || echo "No changes to commit"
           git push https://x-access-token:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}.git HEAD:main
