@@ -25,3 +25,74 @@ spec:
       - PrunePropagationPolicy=foreground
       - PruneLast=true
       - ApplyOutOfSyncOnly=true
+
+
+# ---
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: wisecow-app
+#   namespace: argocd
+#   annotations:
+#     # 👇 Argo CD Image Updater configuration
+#     argocd-image-updater.argoproj.io/image-list: wisecow=harishasapu/wisecow:latest
+#     argocd-image-updater.argoproj.io/wisecow.update-strategy: latest
+#     argocd-image-updater.argoproj.io/write-back-method: git
+#     argocd-image-updater.argoproj.io/git-branch: main
+# spec:
+#   project: default
+
+#   source:
+#     repoURL: 'https://github.com/harishasapu/accuknox-submission.git'
+#     targetRevision: main
+#     path: k8s
+
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: default
+
+#   syncPolicy:
+#     automated:
+#       prune: true           # remove old objects not in Git
+#       selfHeal: true        # fix drift automatically
+#     syncOptions:
+#       - CreateNamespace=true
+#       - PrunePropagationPolicy=foreground
+#       - PruneLast=true
+
+# ---
+
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: wisecow-app
+#   namespace: argocd
+#   annotations:
+#     # 👇 Argo CD Image Updater configuration
+#     # Replace "harishasapu" with your actual Docker Hub username if different
+#     argocd-image-updater.argoproj.io/image-list: wisecow=${DOCKER_USERNAME:-harishasapu}/wisecow:latest
+#     argocd-image-updater.argoproj.io/wisecow.update-strategy: latest
+#     argocd-image-updater.argoproj.io/write-back-method: git
+#     argocd-image-updater.argoproj.io/git-branch: main
+#     argocd-image-updater.argoproj.io/wisecow.allow-tags: regexp:^([a-f0-9]{7,40}|latest)$
+# spec:
+#   project: default
+
+#   source:
+#     repoURL: 'https://github.com/harishasapu/accuknox-submission.git'
+#     targetRevision: main
+#     path: k8s
+
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: default
+
+#   syncPolicy:
+#     automated:
+#       prune: true
+#       selfHeal: true
+#     syncOptions:
+#       - CreateNamespace=true
+#       - PrunePropagationPolicy=foreground
+#       - PruneLast=true
+
