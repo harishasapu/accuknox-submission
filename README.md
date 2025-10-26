@@ -60,4 +60,24 @@ kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/
 kubectl wait --namespace cert-manager --for=condition=ready pod --selector=app=cert-manager --timeout=90s
 ```
 
-
+## Step 4: Argo CD Installation on EKS Cluster
+```bash
+#Create argocd namespace
+kubectl create namespace argocd
+```
+```bash
+# Apply argocd manifest
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+```bash
+Check argocd services
+kubectl get svc -n argocd
+```
+```bash
+# Change argocd server's service from ClusterIP to LoadBalancer
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+```
+```bash
+# Confirm service is patched or not
+kubectl get svc -n argocd
+```
