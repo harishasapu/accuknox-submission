@@ -81,3 +81,28 @@ kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}
 # Confirm service is patched or not
 kubectl get svc -n argocd
 ```
+```bash
+# Fetch the initial password of argocd server
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+```
+
+## Step 5: Wisecow Application Deployment with Argo CD
+```bash
+# The Argo CD Application manifest is located 
+argocd/argocd-application.yaml
+```
+- This file defines the wisecow-app Argo CD application with automated sync and image updates.
+
+- **Deployment Steps**
+- Apply the Application with kubectl
+```bash
+kubectl apply -f argocd-application.yaml
+```
+- Verify Deployment
+```bash
+kubectl get applications -n argocd
+kubectl get pods -n default
+```
+
+
+
