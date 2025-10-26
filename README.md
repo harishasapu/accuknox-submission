@@ -39,21 +39,19 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 
 #Get the LoadBalancer endpoint
 kubectl get svc -n ingress-nginx
-
-#Copy the EXTERNAL-IP (the URL or hostname)
-
-#Paste it into your wisecow-ingress.yaml in the hosts section
+```
+## Copy the EXTERNAL-IP (the URL or hostname)
+```bash
+# Paste it into your wisecow-ingress.yaml in the hosts section
 tls:
   - hosts:
       - a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com  # Paste your NGINX Ingress Controller LoadBalancer endpoint here
     secretName: wisecow-tls
 rules:
   - host: a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com  # Paste your NGINX Ingress Controller LoadBalancer endpoint here
-
 ```
 
 ## Step 3: Install cert-manager
-
 ```bash
 # Install cert-manager
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
