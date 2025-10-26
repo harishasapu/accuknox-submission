@@ -9,17 +9,17 @@ metadata:
 spec:
   ingressClassName: nginx
   tls:
-  - hosts:
-    - a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com
-    secretName: wisecow-tls
+    - hosts:
+        - a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com
+      secretName: wisecow-tls
   rules:
-  - host: a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: wisecow-service
-            port:
-              number: 80
+    - host: a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wisecow-service
+                port:
+                  number: 80
