@@ -103,6 +103,7 @@ kubectl apply -f argocd-application.yaml
 kubectl get applications -n argocd
 kubectl get pods -n default
 ```
+![argocd-ui](Assests/Argo_UI.png)
 
 
 
