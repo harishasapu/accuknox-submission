@@ -2,11 +2,11 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wisecow-service
+  namespace: wisecow       # must match Deployment namespace
 spec:
-  type: NodePort
+  type: ClusterIP          # default, best for Ingress
   selector:
     app: wisecow
   ports:
-    - port: 4499
-      targetPort: 4499
-      nodePort: 30000
+    - port: 80             # this is what Ingress will hit
+      targetPort: 4499     # your container actually listens on 4499
