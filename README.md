@@ -40,6 +40,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main
 #Get the LoadBalancer endpoint
 kubectl get svc -n ingress-nginx
 # Create A record pointing wisecow.com to NGINX Ingress Controller End Point
+# Or update your DNS provider to point to the NGINX Ingress Controller End Point
 ```
 ## Copy the EXTERNAL-IP (the URL or hostname)
 ```bash
