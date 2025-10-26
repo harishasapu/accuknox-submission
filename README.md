@@ -34,11 +34,12 @@ eksctl utils associate-iam-oidc-provider \
 
 ## Step 2: Install NGINX Ingress Controller 
 ```bash
-#To install the NGINX Ingress Controller on your Kubernetes cluster, run:
+# To install the NGINX Ingress Controller on your Kubernetes cluster, run:
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
 #Get the LoadBalancer endpoint
 kubectl get svc -n ingress-nginx
+# Create A record pointing wisecow.com to NGINX Ingress Controller End Point
 ```
 ## Copy the EXTERNAL-IP (the URL or hostname)
 ```bash
@@ -103,7 +104,7 @@ kubectl apply -f argocd-application.yaml
 kubectl get applications -n argocd
 kubectl get pods -n default
 ```
-![argocd-ui](Assests/Argo_UI.png)
+
 
 
 
