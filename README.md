@@ -37,8 +37,19 @@ eksctl utils associate-iam-oidc-provider \
 #To install the NGINX Ingress Controller on your Kubernetes cluster, run:
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
 
-#To check the service created for the NGINX Ingress Controller, run
+#Get the LoadBalancer endpoint
 kubectl get svc -n ingress-nginx
+
+#Copy the EXTERNAL-IP (the URL or hostname)
+
+#Paste it into your wisecow-ingress.yaml in the hosts section
+tls:
+  - hosts:
+      - a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com  # Paste your NGINX Ingress Controller LoadBalancer endpoint here
+    secretName: wisecow-tls
+rules:
+  - host: a872dbe38ea2049fb8fa988074e52ceb-1726839868.ap-south-1.elb.amazonaws.com  # Paste your NGINX Ingress Controller LoadBalancer endpoint here
+
 ```
 
 ## Step 3: Install cert-manager
