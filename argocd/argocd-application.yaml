@@ -32,7 +32,7 @@ spec:
       allowEmpty: true
     syncOptions:
       - CreateNamespace=true           # create target namespace if missing
-      - PrunePropagationPolicy=foreground  # delete old pods cleanly before replacing
+      - PrunePropagationPolicy=Foreground  # delete old ReplicaSets & Pods before new rollout
       - PruneLast=true                 # ensure pruning happens after sync
       - ApplyOutOfSyncOnly=true             # only apply when something changed
       - Replace=true                        # replace instead of patch to remove old pods cleanly
