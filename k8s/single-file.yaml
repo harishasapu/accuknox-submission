@@ -1,23 +1,5 @@
 # ==========================================
-# 1️⃣ ClusterIssuer for Let's Encrypt
-# ==========================================
-apiVersion: cert-manager.io/v1
-kind: ClusterIssuer
-metadata:
-  name: letsencrypt-prod
-spec:
-  acme:
-    email: harishasapu0040@gmail.com
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      name: letsencrypt-prod
-    solvers:
-      - http01:
-          ingress:
-            class: nginx
----
-# ==========================================
-# 2️⃣ Deployment for .NET App
+# 1️⃣ Deployment for .NET App
 # ==========================================
 apiVersion: apps/v1
 kind: Deployment
@@ -38,13 +20,13 @@ spec:
           image: harishasapu/dotnet-demoapp:latest
           ports:
             - containerPort: 80
-          readinessProbe:       # ensures pod is Ready before Ingress routes
+          readinessProbe:
             httpGet:
               path: /
               port: 80
             initialDelaySeconds: 5
             periodSeconds: 5
-          livenessProbe:       # restarts pod if it fails
+          livenessProbe:
             httpGet:
               path: /
               port: 80
@@ -52,45 +34,17 @@ spec:
             periodSeconds: 10
 ---
 # ==========================================
-# 3️⃣ Service to expose the Deployment
+# 2️⃣ Service using NodePort
 # ==========================================
 apiVersion: v1
 kind: Service
 metadata:
-  name: dotnet-service
+  name: dotnet-nodeport
 spec:
   selector:
     app: dotnet-app
+  type: NodePort
   ports:
     - port: 80
       targetPort: 80
-  type: ClusterIP
----
-# ==========================================
-# 4️⃣ Ingress with TLS for external access
-# ==========================================
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: dotnet-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
-    kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "true" # force HTTPS
-spec:
-  ingressClassName: nginx
-  tls:
-    - hosts:
-        - harishn8n.duckdns.org
-      secretName: dotnet-tls
-  rules:
-    - host: harishn8n.duckdns.org
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: dotnet-service
-                port:
-                  number: 80
+      nodePort: 30080
