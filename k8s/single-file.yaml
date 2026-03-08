@@ -38,6 +38,18 @@ spec:
           image: harishasapu/dotnet-demoapp:latest
           ports:
             - containerPort: 80
+          readinessProbe:       # ensures pod is Ready before Ingress routes
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:       # restarts pod if it fails
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 10
 ---
 # ==========================================
 # 3️⃣ Service to expose the Deployment
@@ -64,7 +76,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
-    nginx.ingress.kubernetes.io/ssl-redirect: "true" # Redirect HTTP → HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true" # force HTTPS
 spec:
   ingressClassName: nginx
   tls:
