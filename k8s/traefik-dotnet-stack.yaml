@@ -1,0 +1,206 @@
+# -----------------------------
+# 01. Traefik Deployment
+# -----------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traefik
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: traefik
+  template:
+    metadata:
+      labels:
+        app: traefik
+    spec:
+      containers:
+        - name: traefik
+          image: traefik:v3.0
+          args:
+            - "--api.dashboard=true"
+            - "--providers.kubernetesgateway=true"
+            - "--providers.kubernetescrd=true"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
+            - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+            - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+            - "--certificatesresolvers.myresolver.acme.email=your-email@gmail.com"
+            - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+          ports:
+            - name: web
+              containerPort: 80
+            - name: websecure
+              containerPort: 443
+            - name: dashboard
+              containerPort: 8080
+          volumeMounts:
+            - name: letsencrypt
+              mountPath: /letsencrypt
+      volumes:
+        - name: letsencrypt
+          emptyDir: {}
+
+---
+# -----------------------------
+# 02. Traefik Service (NodePort)
+# -----------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefik
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: traefik
+  ports:
+    - name: web
+      port: 80
+      targetPort: 80
+      nodePort: 30080
+    - name: websecure
+      port: 443
+      targetPort: 443
+      nodePort: 30443
+    - name: dashboard
+      port: 8080
+      targetPort: 8080
+      nodePort: 30090
+
+---
+# -----------------------------
+# 03. GatewayClass
+# -----------------------------
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: traefik
+spec:
+  controllerName: traefik.io/gateway-controller
+
+---
+# -----------------------------
+# 04. Gateway
+# -----------------------------
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-gateway
+  namespace: default
+spec:
+  gatewayClassName: traefik
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: secret-tls
+      allowedRoutes:
+        namespaces:
+          from: Same
+
+---
+# -----------------------------
+# 05. dotnet-demoapp Deployment
+# -----------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dotnet-demoapp
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-demoapp
+  template:
+    metadata:
+      labels:
+        app: dotnet-demoapp
+    spec:
+      containers:
+        - name: dotnet-demoapp
+          image: dotnet-demoapp:latest
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "200m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+---
+# -----------------------------
+# 06. dotnet-demoapp Service
+# -----------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: dotnet-demoapp-service
+  namespace: default
+spec:
+  selector:
+    app: dotnet-demoapp
+  ports:
+    - port: 80
+      targetPort: 80
+
+---
+# -----------------------------
+# 07. HTTPRoute
+# -----------------------------
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: dotnet-demoapp-route
+  namespace: default
+spec:
+  parentRefs:
+    - name: traefik-gateway
+  hostnames:
+    - harishn8n.duckdns.org
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: dotnet-demoapp-service
+          port: 80
+
+---
+# -----------------------------
+# 08. Horizontal Pod Autoscaler
+# -----------------------------
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: dotnet-demoapp-hpa
+  namespace: default
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: dotnet-demoapp
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
