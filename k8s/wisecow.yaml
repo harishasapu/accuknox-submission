@@ -74,7 +74,7 @@ spec:
     email: harishasapu0040@gmail.com
     server: https://acme-v02.api.letsencrypt.org/directory
     privateKeySecretRef:
-      name: letsencrypt-prod
+      name: letsencrypt-prod-key
     solvers:
     - http01:
         ingress:
