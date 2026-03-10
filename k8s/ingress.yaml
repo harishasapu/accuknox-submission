@@ -10,10 +10,10 @@ spec:
   ingressClassName: traefik
   tls:
   - hosts:
-    - wisecow.yourdomain.com
+    - harishargo.duckdns.org
     secretName: wisecow-tls
   rules:
-  - host: wisecow.yourdomain.com
+  - host: harishargo.duckdns.org
     http:
       paths:
       - path: /
