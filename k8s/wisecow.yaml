@@ -44,10 +44,9 @@ metadata:
   name: wisecow-ingress
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt-prod
-    traefik.ingress.kubernetes.io/router.entrypoints: websecure
-    traefik.ingress.kubernetes.io/router.tls: "true"
+    kubernetes.io/ingress.class: "nginx"
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   tls:
   - hosts:
     - harishargo.duckdns.org
@@ -78,4 +77,4 @@ spec:
     solvers:
     - http01:
         ingress:
-          class: traefik
+          class: nginx
