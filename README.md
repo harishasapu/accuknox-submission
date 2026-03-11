@@ -60,7 +60,7 @@ GitHub → Actions → Docker Hub → ArgoCD → Kubernetes
 
 ![CI](/assets/CI.png)  
 
-**CD (ArgoCD)**  
+### 5. CD (ArgoCD)
 - ArgoCD Image Updater monitors GitOps repo  
 - Automatically syncs manifests to the cluster  
 - Ensures declarative GitOps workflow is always maintained  
@@ -81,7 +81,7 @@ helm install traefik traefik/traefik --namespace traefik --create-namespace
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
 ```
 
-🔍 Verification
+## 🔍 Verification
 
 ✅ Application accessible via HTTPS at harishwisecow.duckdns.org
 
