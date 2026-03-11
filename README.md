@@ -14,9 +14,11 @@ Access the deployed application securely via HTTPS:
 ---
 
 ## 🏗️ Architecture
+```
 GitHub → Actions → Docker Hub → ArgoCD → Kubernetes
    ↓         ↓         ↓          ↓         ↓
  Code    Build/Push  Registry  GitOps   Deploy
+ ```
 
 
 
@@ -77,6 +79,7 @@ helm install traefik traefik/traefik --namespace traefik --create-namespace
 
 # Install Cert-Manager
 kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.13.0/cert-manager.yaml
+```
 
 🔍 Verification
 
