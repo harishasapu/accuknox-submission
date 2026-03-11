@@ -6,14 +6,15 @@ metadata:
     app: wisecow
 spec:
   replicas: 4
+  revisionHistoryLimit: 0   # delete old ReplicaSets immediately
   selector:
     matchLabels:
       app: wisecow
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 0       # never exceed 4 pods
-      maxUnavailable: 1 # update one pod at a time
+      maxSurge: 0
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -21,6 +22,6 @@ spec:
     spec:
       containers:
       - name: wisecow
-        image: harishasapu/wisecow:db2a5d33a14d89197a89b008048057df7d5ddba3
+        image: harishasapu/wisecow:8984712fe29520faaea740950d76c4a4219a0d04
         ports:
         - containerPort: 4499
