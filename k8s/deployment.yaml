@@ -25,4 +25,3 @@ spec:
         image: harishasapu/wisecow:7075908840523079e58419e0cdeb91f522044bfc
         ports:
         - containerPort: 4499
-        
