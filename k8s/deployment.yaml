@@ -5,10 +5,15 @@ metadata:
   labels:
     app: wisecow
 spec:
-  replicas: 1
+  replicas: 4
   selector:
     matchLabels:
       app: wisecow
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 0       # never exceed 4 pods
+      maxUnavailable: 1 # update one pod at a time
   template:
     metadata:
       labels:
@@ -19,21 +24,3 @@ spec:
         image: harishasapu/wisecow:8984712fe29520faaea740950d76c4a4219a0d04
         ports:
         - containerPort: 4499
-          name: wisecow-port
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "100m"
-          limits:
-            memory: "128Mi"
-            cpu: "200m"
-        livenessProbe:
-          tcpSocket:
-            port: 4499
-          initialDelaySeconds: 15
-          periodSeconds: 20
-        readinessProbe:
-          tcpSocket:
-            port: 4499
-          initialDelaySeconds: 5
-          periodSeconds: 10
