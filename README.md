@@ -56,7 +56,7 @@ GitHub → Actions → Docker Hub → ArgoCD → Kubernetes
 - Build: Docker image tagged with commit SHA  
 - Push: To Docker Hub
 
-![CI](/assets/CI.png)
+![CI](/assets/CI.png)  
 
 **CD (ArgoCD)**  
 - ArgoCD Image Updater monitors GitOps repo  
